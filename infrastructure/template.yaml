@@ -1,0 +1,24 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Update existing greetCaller Lambda Function
+
+Resources:
+  GreetCallerFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: greetCaller
+      Handler: index.lambda_handler
+      Runtime: python3.8
+      Role: arn:aws:iam::071735315475:role/lambda-execution-role
+      Code:
+        ZipFile: |
+          import json
+
+          def lambda_handler(event, context):
+              # Access the 'Name' parameter from the event
+              name = event.get('Details', {}).get('Parameters', {}).get('Name', 'Guest')
+              
+              # Return a response
+              return {
+                  'statusCode': 200,
+                  'message': f'Hello, {name}! Welcome to Amazon Connect.'
+              }
