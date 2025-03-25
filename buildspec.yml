@@ -1,0 +1,27 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      python: 3.8
+    commands:
+      - echo "Installing dependencies..."
+      - pip install awscli
+
+  build:
+    commands:
+      - echo "Deploying Lambda function..."
+      - aws cloudformation deploy \
+          --template-file infrastructure/template.yaml \
+          --stack-name amazon-connect-cicd-stack \
+          --capabilities CAPABILITY_NAMED_IAM
+
+      - echo "Deploying contact flow..."
+      - AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query "Account" --output text)
+      - INSTANCE_ID="8edb573d-9b54-4780-9ef9-3951cc8dc9fb"  # Replace with your Amazon Connect instance ID
+      - CONTACT_FLOW_NAME="greetCallerFlow"
+      - aws connect import-contact-flow \
+          --instance-id $INSTANCE_ID \
+          --name $CONTACT_FLOW_NAME \
+          --content file://contact-flows/greetCallerFlow.json \
+          --type CONTACT_FLOW
