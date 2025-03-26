@@ -15,9 +15,9 @@ phases:
 
       - echo "Deploying Lambda function..."
       - aws cloudformation deploy \
-          --template-file infrastructure/template.yaml \
-          --stack-name amazon-connect-cicd-stack \
-          --capabilities CAPABILITY_NAMED_IAM
+         --template-file infrastructure/template.yaml \
+         --stack-name amazon-connect-cicd-stack \
+         --capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM
 
       - echo "Deploying contact flow..."
       - export AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query "Account" --output text) && \
