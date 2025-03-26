@@ -18,10 +18,7 @@ phases:
 
   build:
     commands:
-      - aws cloudformation deploy \
-          --template-file infrastructure/template.yaml \
-          --stack-name amazon-connect-cicd-stack \
-          --capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM
+      - aws cloudformation deploy --template-file infrastructure/template.yaml --stack-name amazon-connect-cicd-stack --capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM
       - aws connect import-contact-flow \
           --instance-id "${INSTANCE_ID}" \
           --name "${CONTACT_FLOW_NAME}" \
